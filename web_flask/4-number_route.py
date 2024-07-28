@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+""" a script that starts a Flask web application
+    The web application is listening on 0.0.0.0, port 5000
+"""
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route("/", strict_slashes=False)
+def hello_hbnb():
+    """used to displays 'Hello HBNB!'"""
+    return "Hello HBNB!"
+
+
+@app.route("/hbnb", strict_slashes=False)
+def hbnb():
+    """used to displays 'HBNB'"""
+    return "HBNB"
+
+
+@app.route("/c/<text>", strict_slashes=False)
+def c(text):
+    """used to displays 'C' followed by the value of <text>"""
+    text = text.replace("_", " ")
+    return "C {}".format(text)
+
+
+@app.route('/python/', defaults={'text': 'is_cool'}, strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def cool_python(text):
+    """used to display 'python' + text
+    and 'python is cool' if no text in the URL """
+    return "Python " + text.replace('_', ' ')
+
+
+@app.route("/number/<int:n>", strict_slashes=False)
+def int_number(n):
+    """ used to display n is number if n is an integer"""
+    return "{} is a number".format(n)
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
