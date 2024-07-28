@@ -18,6 +18,7 @@ def hbnb():
     """used to displays 'HBNB'"""
     return "HBNB"
 
+
 @app.route("/c/<text>", strict_slashes=False)
 def c(text):
     """used to displays 'C' followed by the value of <text>"""
