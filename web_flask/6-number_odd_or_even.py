@@ -1,0 +1,58 @@
+#!/usr/bin/python3
+""" a script that starts a Flask web application
+    The web application is listening on 0.0.0.0, port 5000
+"""
+from flask import Flask
+from flask import render_template
+
+app = Flask(__name__)
+
+
+@app.route("/", strict_slashes=False)
+def hello_hbnb():
+    """used to displays 'Hello HBNB!'"""
+    return "Hello HBNB!"
+
+
+@app.route("/hbnb", strict_slashes=False)
+def hbnb():
+    """used to displays 'HBNB'"""
+    return "HBNB"
+
+
+@app.route("/c/<text>", strict_slashes=False)
+def c(text):
+    """used to displays 'C' followed by the value of <text>"""
+    text = text.replace("_", " ")
+    return "C {}".format(text)
+
+
+@app.route('/python/', defaults={'text': 'is_cool'}, strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def cool_python(text):
+    """used to display 'python' + text
+    and 'python is cool' if no text in the URL """
+    return "Python " + text.replace('_', ' ')
+
+
+@app.route("/number/<int:n>", strict_slashes=False)
+def int_number(n):
+    """ used to display n is number if n is an integer"""
+    return "{} is a number".format(n)
+
+
+@app.route("/number_template/<int:n>", strict_slashes=False)
+def num_template(n):
+    """if n is an integer it will display an HTML page"""
+    return render_template("5-number.html", n=n)
+
+
+@app.route("/number_odd_or_even/<int:n>", strict_slashes=False)
+def odd_or_even_nums(n):
+    """if n is an integer it will display an HTML page
+    and displays if n is odd or even"""
+    return render_template("6-number_odd_or_even.html", n=n)
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
