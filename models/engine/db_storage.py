@@ -39,24 +39,34 @@ class DBStorage:
         if cls:
             objs = self.__session.query(cls).all()
         else:
-            objs = self.__session.query(User, State, City, Amenity, Place, Review).all()
+            objs = self.__session.query(
+                    User, State, City, Amenity, Place, Review).all()
         for obj in objs:
             key = f'{obj.__class__.__name__}.{obj.id}'
             objects_dict[key] = obj
         return objects_dict
+
     def new(self, obj):
         """add obj to db"""
         self.__session.add(obj)
+
     def save(self):
         """commit all changes of current db session"""
         self.__session.commit()
+
     def delete(self, obj=None):
         """delete from db session obj if not none"""
-        if obj != None:
+        if obj:
             self.__session.delete(obj)
+
     def reload(self):
         """"create all tables in db and current db session"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(
+                bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        """ call remove() method on the private session attribute """
+        self.__session.close()
